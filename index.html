@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>레슨합시다! 상시 오픈 전환 기획(안) — 시각화</title>
+<style>
+  :root {
+    --bg: #F7F7F4;
+    --sheet: #FFFFFF;
+    --ink: #1C2420;
+    --soft: #5A665F;
+    --accent: #1E6B45;
+    --accent-deep: #14522F;
+    --accent-tint: #EAF2ED;
+    --warn: #B4552D;
+    --warn-tint: #FAF0EA;
+    --blue: #2B5C86;
+    --blue-tint: #E9F0F6;
+    --line: #E2E6E1;
+    --shadow: 0 1px 2px rgba(28,36,32,.05), 0 6px 18px rgba(28,36,32,.05);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Apple SD Gothic Neo", Pretendard, "Noto Sans KR", "Malgun Gothic", sans-serif;
+    line-height: 1.6; word-break: keep-all; -webkit-font-smoothing: antialiased;
+  }
+  .doc { max-width: 940px; margin: 32px auto; background: var(--sheet); border: 1px solid var(--line); padding: 44px 52px 56px; }
+  .meta { font-size: 12.5px; color: var(--soft); letter-spacing: 0.06em; border-bottom: 2px solid var(--ink); padding-bottom: 10px; margin-bottom: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px; }
+  .meta b { color: var(--accent); }
+  h1 { font-size: 28px; font-weight: 800; line-height: 1.3; letter-spacing: -0.01em; margin: 0 0 6px; }
+  .summary { font-size: 14.5px; color: var(--soft); margin: 0 0 18px; }
+  .summary b { color: var(--ink); }
+  .docinfo { font-size: 12.5px; color: var(--soft); margin-bottom: 8px; }
+  .docinfo span { margin-right: 16px; }
+
+  h2 { font-size: 17px; font-weight: 800; margin: 40px 0 14px; display: flex; align-items: center; gap: 10px; }
+  h2 .no { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 8px; background: var(--accent); color: #fff; font-size: 14px; }
+
+  /* HERO STAT CARDS */
+  .hero { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 22px 0 8px; }
+  .stat { border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; background: var(--sheet); box-shadow: var(--shadow); }
+  .stat .lab { font-size: 11.5px; font-weight: 800; letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; }
+  .stat .big { font-size: 21px; font-weight: 800; margin: 6px 0 2px; }
+  .stat .sub { font-size: 12.5px; color: var(--soft); }
+
+  /* GENERIC CARD GRID */
+  .cardgrid { display: grid; gap: 12px; margin: 12px 0; }
+  .cardgrid.c2 { grid-template-columns: repeat(2, 1fr); }
+  .cardgrid.c3 { grid-template-columns: repeat(3, 1fr); }
+  .cardgrid.c4 { grid-template-columns: repeat(4, 1fr); }
+  .tile { border: 1px solid var(--line); border-radius: 12px; padding: 13px 15px; background: var(--sheet); }
+  .tile .th { font-size: 13px; font-weight: 800; margin-bottom: 3px; display: flex; align-items: center; gap: 7px; }
+  .tile .td { font-size: 12.5px; color: var(--soft); line-height: 1.5; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+  .dot.w { background: var(--warn); }
+  .dot.b { background: var(--blue); }
+
+  /* PILL / BADGE */
+  .pill { display: inline-block; font-size: 11px; font-weight: 800; padding: 2px 10px; border-radius: 999px; }
+  .pill.g { background: var(--accent-tint); color: var(--accent-deep); }
+  .pill.w { background: var(--warn-tint); color: var(--warn); }
+  .pill.b { background: var(--blue-tint); color: var(--blue); }
+  .pill.gray { background: #EEF0EE; color: var(--soft); }
+
+  /* AS-IS / TO-BE COMPARISON */
+  .cmp { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; margin: 14px 0; }
+  .cmp .row { display: grid; grid-template-columns: 92px 1fr 34px 1fr; align-items: stretch; border-top: 1px solid var(--line); }
+  .cmp .row:first-child { border-top: none; }
+  .cmp .k { background: #FAFBFA; font-size: 12px; font-weight: 800; color: var(--ink); display: flex; align-items: center; padding: 12px 12px; }
+  .cmp .a { background: var(--warn-tint); font-size: 12.5px; color: #7a4326; padding: 12px 14px; display: flex; align-items: center; }
+  .cmp .arrow { display: flex; align-items: center; justify-content: center; color: var(--soft); font-weight: 800; }
+  .cmp .t { background: var(--accent-tint); font-size: 12.5px; color: var(--accent-deep); padding: 12px 14px; display: flex; align-items: center; font-weight: 600; }
+  .cmp .hdr .k { background: var(--ink); color: #fff; }
+  .cmp .hdr .a { background: var(--warn); color: #fff; font-weight: 800; justify-content: center; }
+  .cmp .hdr .t { background: var(--accent); color: #fff; font-weight: 800; justify-content: center; }
+  .cmp .hdr .arrow { background: var(--ink); }
+
+  /* REVENUE DIAGRAM */
+  .revwrap { border: 1px solid var(--line); border-radius: 16px; padding: 22px; background: linear-gradient(180deg,#FCFDFC,#F6F8F6); margin: 14px 0; }
+  .rev { display: grid; grid-template-columns: 1fr 1.15fr 1fr; align-items: center; gap: 8px; }
+  .node { border-radius: 14px; padding: 16px 14px; text-align: center; box-shadow: var(--shadow); }
+  .node.side { background: #fff; border: 1px solid var(--line); }
+  .node .ntitle { font-size: 14px; font-weight: 800; }
+  .node .nsub { font-size: 11.5px; color: var(--soft); margin-top: 3px; }
+  .node.center { background: var(--accent); color: #fff; padding: 22px 14px; }
+  .node.center .ntitle { font-size: 16px; }
+  .node.center .nsub { color: #DCEBE2; }
+  .conn { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 0 2px; }
+  .conn .lbl { font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+  .conn .ln { font-size: 15px; line-height: 1; }
+  .rev .money-in .lbl { background: var(--accent-tint); color: var(--accent-deep); }
+  .rev .money-back .lbl { background: var(--blue-tint); color: var(--blue); }
+  .revlegend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; font-size: 12px; color: var(--soft); }
+  .revlegend b { color: var(--ink); }
+
+  /* PAY FLOW */
+  .flow { display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; margin: 12px 0; }
+  .step { flex: 1 1 0; min-width: 96px; background: var(--accent-tint); border-radius: 10px; padding: 12px 10px; text-align: center; position: relative; margin-right: 20px; }
+  .step:last-child { margin-right: 0; }
+  .step:not(:last-child)::after { content: "▶"; position: absolute; right: -16px; top: 50%; transform: translateY(-50%); color: var(--accent); font-size: 11px; }
+  .step .sn { font-size: 10.5px; font-weight: 800; color: var(--accent); letter-spacing: .05em; }
+  .step .stx { font-size: 12.5px; font-weight: 700; margin-top: 3px; }
+
+  /* STATE MACHINE */
+  .sm { display: grid; grid-template-columns: 150px 40px 1fr; align-items: center; gap: 10px; margin: 14px 0; }
+  .sm .start { background: var(--blue); color: #fff; border-radius: 12px; padding: 18px 12px; text-align: center; font-weight: 800; font-size: 14px; box-shadow: var(--shadow); }
+  .sm .start small { display: block; font-weight: 600; font-size: 11px; color: #D6E4F0; margin-top: 3px; }
+  .sm .branch { color: var(--soft); font-size: 20px; text-align: center; font-weight: 800; }
+  .sm .outs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .sm .out { border-radius: 10px; padding: 10px 12px; font-size: 12.5px; font-weight: 700; }
+  .sm .out small { display: block; font-weight: 500; font-size: 11px; margin-top: 2px; }
+  .sm .out.ok { background: var(--accent-tint); color: var(--accent-deep); }
+  .sm .out.no { background: var(--warn-tint); color: var(--warn); }
+  .sm .out.cc { background: #EEF0EE; color: var(--soft); }
+  .sm .out.ns { background: #FBEAEA; color: #9B2C2C; }
+
+  /* TIMELINE */
+  .timeline { position: relative; margin: 20px 0 6px; padding-left: 4px; }
+  .tl { display: grid; grid-template-columns: 78px 1fr; gap: 14px; position: relative; padding-bottom: 16px; }
+  .tl:last-child { padding-bottom: 0; }
+  .tl::before { content: ""; position: absolute; left: 37px; top: 26px; bottom: -6px; width: 2px; background: var(--line); }
+  .tl:last-child::before { display: none; }
+  .tl .ph { display: flex; align-items: flex-start; justify-content: center; }
+  .tl .badge { width: 64px; height: 26px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; z-index: 1; }
+  .tl.par .badge { background: var(--blue); }
+  .tl .body { border: 1px solid var(--line); border-radius: 12px; padding: 12px 15px; background: var(--sheet); }
+  .tl .body .bt { font-size: 13.5px; font-weight: 800; }
+  .tl .body .bd { font-size: 12.5px; color: var(--soft); margin-top: 3px; }
+  .tl .body .bn { font-size: 11.5px; color: var(--accent-deep); background: var(--accent-tint); display: inline-block; padding: 2px 9px; border-radius: 999px; margin-top: 7px; }
+
+  /* DECISION CARDS */
+  .qgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 12px 0; }
+  .qcard { border: 1px dashed var(--warn); border-radius: 12px; padding: 14px 16px; background: var(--warn-tint); }
+  .qcard .qn { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 6px; background: var(--warn); color: #fff; font-size: 12px; font-weight: 800; }
+  .qcard .qt { font-size: 13.5px; font-weight: 800; margin: 8px 0 3px; }
+  .qcard .qd { font-size: 12px; color: #7a4326; line-height: 1.5; }
+
+  /* POLICY SPEC TABLE */
+  .spec { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; }
+  .spec th { text-align: left; background: #FAFBFA; color: var(--soft); font-size: 12px; font-weight: 800; padding: 9px 12px; border-bottom: 2px solid var(--ink); }
+  .spec td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .spec td:first-child { font-weight: 800; white-space: nowrap; }
+  .spec tr td .sub { display: block; font-weight: 500; color: var(--soft); font-size: 11.5px; margin-top: 2px; }
+  .spec .free td { background: var(--accent-tint); }
+  .spec .no td:first-child { color: var(--warn); }
+  .subhead { font-size: 13.5px; font-weight: 800; margin: 20px 0 2px; display: flex; align-items: center; gap: 8px; }
+  .subhead .pill { vertical-align: 1px; }
+  .pricebox { display: grid; grid-template-columns: 200px 1fr; gap: 14px; align-items: center; border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; margin: 10px 0; background: linear-gradient(180deg,#FCFDFC,#F6F8F6); }
+  .pricebox .amt { text-align: center; }
+  .pricebox .amt .big { font-size: 26px; font-weight: 800; color: var(--accent-deep); }
+  .pricebox .amt .unit { font-size: 12px; color: var(--soft); font-weight: 700; }
+  .pricebox .why { font-size: 12.5px; color: var(--soft); line-height: 1.55; }
+  .pricebox .why b { color: var(--ink); }
+
+  .note { font-size: 12px; color: var(--soft); margin: 8px 0 0; }
+  .foot { margin-top: 44px; padding-top: 14px; border-top: 2px solid var(--ink); font-size: 12.5px; color: var(--soft); display: flex; justify-content: space-between; flex-wrap: wrap; }
+
+  @media (max-width: 760px) {
+    .doc { margin: 0; padding: 26px 18px; border: none; }
+    .hero, .cardgrid.c3, .cardgrid.c4 { grid-template-columns: 1fr 1fr; }
+    .rev { grid-template-columns: 1fr; }
+    .conn { flex-direction: row; padding: 6px 0; }
+    .conn .ln { transform: rotate(90deg); }
+    .qgrid, .cardgrid.c2 { grid-template-columns: 1fr; }
+    .cmp .row { grid-template-columns: 72px 1fr 22px 1fr; }
+  }
+  @media print {
+    body { background: #fff; }
+    .doc { margin: 0; max-width: none; border: none; padding: 8mm 6mm; }
+    h2 { break-after: avoid; }
+    .cmp, .revwrap, .tl, .qcard, .stat, .tile, .sm { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+  <h1>레슨합시다 상시 오픈 기획</h1>
+  <p class="summary">1·2회차 프로모션을 마치고, <b>3회차부터 상시 서비스로 전환</b>한다.</p>
+
+  <!-- 2. 전환 본질 -->
+  <h2><span class="no">1</span>전환의 본질 — 5가지 전제 변화</h2>
+  <div class="cmp">
+    <div class="row hdr"><div class="k">전제</div><div class="a">프로모션 (AS-IS)</div><div class="arrow"></div><div class="t">상시 (TO-BE)</div></div>
+    <div class="row"><div class="k">시간</div><div class="a">기간이 끝나면 사라짐</div><div class="arrow">→</div><div class="t">항상 열림 · 개별 타임만 열고 닫힘</div></div>
+    <div class="row"><div class="k">공급</div><div class="a">운영팀 섭외 고정 N개</div><div class="arrow">→</div><div class="t">레슨장이 늘고 스스로 관리</div></div>
+    <div class="row"><div class="k">수요관리</div><div class="a">접수 후 개별연락</div><div class="arrow">→</div><div class="t">정원·잔여석·마감 + 상태 앱 확인</div></div>
+    <div class="row"><div class="k">관계</div><div class="a">1회 참가로 종료</div><div class="arrow">→</div><div class="t">재신청·단골·리텐션이 핵심</div></div>
+    <div class="row"><div class="k">수익</div><div class="a">무료 중개(프로모션비)</div><div class="arrow">→</div><div class="t">레슨장 월정액 + 참가자 예약금 선결제</div></div>
+  </div>
+
+  <!-- 3. 수익구조 -->
+  <h2><span class="no">2</span>수익구조 — 결합 모델</h2>
+  <div class="revwrap">
+    <div class="rev">
+      <div class="node side">
+        <div class="ntitle">레슨장 (공급)</div>
+        <div class="nsub">시설·타임 등록</div>
+      </div>
+      <div class="conn money-in">
+        <span class="lbl">① 월정액 18만원(VAT별도)</span>
+        <span class="ln">─────▶</span>
+      </div>
+      <div class="node center">
+        <div class="ntitle">레슨합시다! 플랫폼</div>
+        <div class="nsub">중개 · 자동 정산 · 노출</div>
+      </div>
+    </div>
+    <div class="rev" style="margin-top:14px;">
+      <div class="node side">
+        <div class="ntitle">참가자 (수요)</div>
+        <div class="nsub">타임 선택·수강</div>
+      </div>
+      <div class="conn money-in">
+        <span class="lbl">② 예약금 선결제 1만원</span>
+        <span class="ln">─────▶</span>
+        <span class="lbl" style="background:var(--blue-tint); color:var(--blue); margin-top:10px;">③ 잔여 레슨비 2만원</span>
+        <span class="ln">─────▶</span>
+      </div>
+      <div style="display:grid; gap:8px;">
+        <div class="node center" style="background:var(--accent-deep); padding:12px 12px;">
+          <div class="ntitle" style="font-size:13.5px;">플랫폼 → 레슨장 정산</div>
+          <div class="nsub">예약금 선결제금에서 차감액 정산</div>
+        </div>
+        <div class="node side" style="background:var(--blue-tint); border:1px solid var(--blue); padding:12px 12px;">
+          <div class="ntitle" style="color:var(--blue); font-size:13.5px;">레슨장 직접 수취</div>
+          <div class="nsub">현장 결제 · 플랫폼 미경유</div>
+        </div>
+      </div>
+    </div>
+    <div class="revlegend">
+      <span><b>①</b> 레슨장 월정액 — 18만원(VAT별도), 고정·예측 가능</span>
+      <span><b>②</b> 예약금 선결제 — 타임당 1만원(원볼 or 앱 직접결제), 노쇼 방지</span>
+      <span><b>③</b> 현장 잔여 레슨비 — 레슨비 총 3만원 중 2만원, 레슨장 직접 수취</span>
+    </div>
+  </div>
+
+  <!-- 3-2 결제 플로우 -->
+  <h3 style="font-size:14px; font-weight:800; margin:22px 0 4px;">참가자 결제 플로우 — 예약금 선결제 + 현장 잔액</h3>
+  <div class="flow">
+    <div class="step"><div class="sn">STEP 1</div><div class="stx">타임 선택<br>(타임당 최대 50명)</div></div>
+    <div class="step"><div class="sn">STEP 2</div><div class="stx">예약금 1만원 선결제<br>(원볼 또는 앱 직접결제)</div></div>
+    <div class="step"><div class="sn">STEP 3</div><div class="stx">접수완료<br>(=신청 확정, 알림)</div></div>
+    <div class="step"><div class="sn">STEP 4</div><div class="stx">현장서 잔여<br>레슨비 2만원 결제</div></div>
+  </div>
+  <p class="note">레슨비 총 <b>3만원</b> = 예약금 1만원(선결제) + 현장 2만원(직접). 원볼 결제 시 1만원 ≈ <b>약 303원볼</b>(33원=1원볼). 예약금은 <b>노쇼 방지용</b>으로, 결제 즉시 정원 1석이 확보된다.</p>
+
+  <!-- 4. 신청 상태 머신 -->
+  <h2><span class="no">3</span>신청 상태 흐름</h2>
+  <div class="sm">
+    <div class="start">결제 완료 = 확정<small>예약금 결제까지 완료돼야 1석 확정 (선착순)</small></div>
+    <div class="branch">▶</div>
+    <div class="outs">
+      <div class="out ok">확정<small>수강 → 현장 잔액 결제 → 재신청</small></div>
+      <div class="out cc">대기<small>정원(최대 50명) 마감 시 대기 등록</small></div>
+      <div class="out cc">유저 취소<small>레슨 24시간 전까지 가능 · 예약금 환불</small></div>
+      <div class="out ns">노쇼<small>사전 연락 없이 불참 → 예약금 몰수 + 페널티</small></div>
+    </div>
+  </div>
+  <p class="note">신청은 <b>예약금 결제까지 완료되어야 확정</b>된다(레슨장 별도 승인·거절 없음). 정원이 차면 <b>대기 등록</b>이 가능하고, 취소·마감·대기 전환 시 <b>푸시 알림</b>이 나간다. 신청자 1명이라도 있는 타임은 레슨장이 폐쇄 불가.</p>
+
+  <div class="subhead"><span class="pill w">노쇼 페널티</span>예약금 기반 불참 규정</div>
+  <table class="spec">
+    <tr><th>구분</th><th>처리</th></tr>
+    <tr class="free"><td>사전 연락 취소</td><td>레슨 <b>24시간 전까지</b> 취소 가능(노쇼 아님) → 자리 반납 + <b>예약금 환불</b></td></tr>
+    <tr class="no"><td>노쇼 1회 (사전 연락 없이 불참)</td><td>예약금 <b>몰수</b> + 노쇼 1회 기록·경고 푸시</td></tr>
+    <tr class="no"><td>노쇼 2회 누적</td><td>이후 <b>30일간 신규 레슨 신청 제한</b></td></tr>
+    <tr class="no"><td>노쇼 3회 이상</td><td>서비스 <b>이용 제한</b></td></tr>
+  </table>
+  <p class="note"><b>24시간 전 사전 취소는 예약금이 환불</b>되고, 당일 취소·노쇼 시에만 예약금이 몰수된다. 레슨장의 <b>출석 체크</b>로 노쇼가 확정된다.</p>
+
+  <!-- 5. TO-BE 신청 플로우 -->
+  <h2><span class="no">4</span>상시 신청 플로우 (앱)</h2>
+  <div class="flow">
+    <div class="step"><div class="sn">01</div><div class="stx">레슨 메뉴<br>(상설 진입)</div></div>
+    <div class="step"><div class="sn">02</div><div class="stx">필터 탐색<br>(잔여석 표시)</div></div>
+    <div class="step"><div class="sn">03</div><div class="stx">타임 선택<br>(최대 50명)</div></div>
+    <div class="step"><div class="sn">04</div><div class="stx">예약금 1만원 선결제<br>(원볼/앱결제)</div></div>
+    <div class="step"><div class="sn">05</div><div class="stx">접수완료 알림<br>(=신청 확정)</div></div>
+    <div class="step"><div class="sn">06</div><div class="stx">현장 잔액 결제<br>및 수강</div></div>
+  </div>
+  <div class="cardgrid c2" style="margin-top:14px;">
+    <div class="tile"><div class="th"><span class="pill g">참가자 앱</span></div><div class="td">상설 진입점 · 잔여석/마감 배지 · 타임 선택(중복 아니면 제한 없음) · 예약금 선결제 · 대기 등록 · 내 레슨 탭 · 재신청 · 필드레슨 카테고리</div></div>
+    <div class="tile"><div class="th"><span class="pill b">레슨장 파트너</span></div><div class="td"><b>앱 내 파트너 모드</b>에서 바로 이용 — 시설 등록→승인 · 타임 생성(정원·가격) · 신청자 확인 · 출석 체크 · <b>자동 정산 대시보드</b> · 고정 정산일 (별도 웹 접속 불필요)</div></div>
+  </div>
+
+  <!-- 6. 로드맵 -->
+  <h2><span class="no">5</span>단계별 로드맵</h2>
+  <div class="timeline">
+    <div class="tl"><div class="ph"><span class="badge">P1</span></div><div class="body"><div class="bt">3회차부터 상시로 전환</div><div class="bd">타임 단위 신청(=확정), 잔여석/마감/대기, 예약금 선결제+푸시, 상설 진입점, 내 레슨, 재신청 — 상시 서비스 오픈</div><span class="bn">레슨장 월 구독 18만원(VAT별도) + 예약금 선결제 수익화</span></div></div>
+    <div class="tl"><div class="ph"><span class="badge">P2</span></div><div class="body"><div class="bt">레슨장 셀프 관리</div><div class="bd">앱 내 파트너 모드 · 입점 신청→승인→타임 자율 생성 · 자동 정산 대시보드·고정 정산일</div><span class="bn">공급 확장의 전제 조건</span></div></div>
+    <div class="tl par"><div class="ph"><span class="badge">P3</span></div><div class="body"><div class="bt">수익화 확장</div><div class="bd">필드레슨(피칭머신 용병게임 등) 상품 연계로 카테고리·거래 확장</div><span class="bn">구상 중</span></div></div>
+  </div>
+
+  <!-- 6. 운영 정책 -->
+  <h2><span class="no">6</span>운영 정책</h2>
+
+  <div class="subhead"><span class="pill b">사용자1 · 레슨장</span>월 구독료</div>
+  <div class="pricebox">
+    <div class="amt"><div class="big">월 180,000<span style="font-size:15px;">원</span></div><div class="unit">VAT 별도 · 타임 최대 8개 생성</div></div>
+    <div class="why">레슨장 1곳 기준 월정액(타임 <b>월 8개</b>까지 생성). 그룹레슨 1개월 패키지가 <b>15~20만원</b>인 시장 시세에 맞춰 책정했다. 참가자 예약금(1만원)은 자동 정산되고, <b>잔여 레슨비 2만원은 레슨장이 현장에서 참가자에게 직접 받는다.</b></div>
+  </div>
+
+  <div class="subhead"><span class="pill b">사용자1 · 레슨장</span>자동 정산 대시보드</div>
+  <div class="pricebox" style="grid-template-columns:1fr;">
+    <div class="why" style="color:var(--ink);">
+      업주가 직접 계산할 필요 없이 <b>이번 달 월정액 · 선결제금 · 차감액 · 최종 금액</b>을 그래프로 보여준다.
+      상황에 따라 <b>"이번 달은 OO원만 자동 결제됩니다"</b> 또는 <b>"OO원이 입금될 예정입니다"</b>를 자동 안내하고, <b>고정 정산일</b>에 처리한다.
+    </div>
+    <table class="spec" style="margin-top:6px;">
+      <tr><th>항목</th><th>금액(예시)</th></tr>
+      <tr><td>월 구독료</td><td>− 180,000원 (VAT 별도)</td></tr>
+      <tr><td>참가자 예약금 선결제금</td><td>+ 250,000원 <span class="sub">타임 25건 × 1만원</span></td></tr>
+      <tr><td>플랫폼 차감액(수수료 등)</td><td>− 차감액</td></tr>
+      <tr class="free"><td>이번 달 결과</td><td><b>OO원 입금 예정</b> (또는 OO원 자동 결제)</td></tr>
+    </table>
+    <p class="note" style="margin-top:8px;">고정 정산일(예: 매월 10일)에 자동 처리 — 순액이 (+)면 입금, (−)면 자동 결제.</p>
+  </div>
+
+  <div class="subhead"><span class="pill g">사용자2 · 참가자</span>타임별 정원수</div>
+  <div class="pricebox">
+    <div class="amt"><div class="big">타임당 50<span style="font-size:15px;">명</span></div><div class="unit">시스템 상한 · 레슨장이 유형별로 설정</div></div>
+    <div class="why">한 타임당 <b>최대 50명</b>까지 신청 가능(상한). 시간이 겹치지 않으면 참가자의 타임 신청 수 제한은 없다. 레슨 유형별 권장 기본값은 아래 표 참고 — 레슨장이 타임 생성 시 상한 내에서 조정한다.</div>
+  </div>
+  <table class="spec">
+    <tr><th>레슨 유형</th><th>권장 정원(기본값)</th><th>비고</th></tr>
+    <tr><td>개인 (1:1)</td><td>1명</td><td>타격·투구 정밀 교정</td></tr>
+    <tr><td>소그룹 타격/수비</td><td>3~5명</td><td>코치 1인이 순환 지도 가능한 범위</td></tr>
+    <tr><td>그룹 트레이닝</td><td>6~10명</td><td>체력·기본기 반복 훈련</td></tr>
+    <tr><td>필드레슨 (피칭머신 용병게임 등)</td><td>10~50명</td><td>구장 수용 인원 기준, 상품별 조정</td></tr>
+  </table>
+
+  <div class="subhead"><span class="pill g">사용자2 · 참가자</span>결제·취소·환불 규정</div>
+  <table class="spec">
+    <tr><th>구분</th><th>내용</th></tr>
+    <tr><td>레슨비 총액</td><td><b>타임당 3만원</b> = 예약금 1만원(선결제) + 현장 2만원(레슨장 직접)</td></tr>
+    <tr><td>예약금 결제 수단</td><td>원볼(현금 상응 원볼 차감, 33원=1원볼) 또는 앱 직접결제 1만원 중 선택</td></tr>
+    <tr class="free"><td>사전 취소 (레슨 24시간 전까지)</td><td>취소 가능 · 자리 반납 · <b>예약금 환불</b></td></tr>
+    <tr class="no"><td>당일 취소 / 노쇼</td><td>예약금 <b>몰수</b> (+ 노쇼 페널티는 §3)</td></tr>
+    <tr><td>레슨장 사정 취소</td><td>예약금 <b>전액 환불</b> + 우선 재예약 안내 (운영팀 경유 통지)</td></tr>
+  </table>
+  <p class="note">레슨 <b>24시간 전 사전 취소</b>는 예약금이 환불되고, <b>당일 취소·노쇼</b> 시에만 예약금이 몰수된다(노쇼 방지). 잔여 레슨비 2만원은 현장에서 레슨장에 직접 결제한다.</p>
+
+  <div class="foot"><span>GAMEONE · 레슨합시다! 상시 오픈 전환 기획(안) v0.9</span><span>다음 단계: 방향 확정 → P1 상세 기획 → 개발 범위 산정</span></div>
+</div>
+</body>
+</html>
