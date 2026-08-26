@@ -1,0 +1,812 @@
+<title>레슨합시다 상시 운영정책</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+*,*::before,*::after{box-sizing:border-box}
+img,svg{display:block;max-width:100%}
+button{font:inherit;color:inherit}
+
+:root{
+  /* ── 게임원 primitive (tokens.json v1.0.0) ── */
+  --green-05:#DBEDE7; --green-10:#9DC0B5; --green-40:#2F7961; --green-500:#115740;
+  --sub1-10:#FCF3CD; --sub1-500:#FFCD00;
+  --sub2-10:#E7E2FD; --sub2-500:#3B0FE8;
+  --point-10:#FFC5D6; --point-20:#FF9AB7; --point-500:#ED0045;
+  --currency-10:#ECE7F5; --currency-500:#37098C;
+  --neutral-0:#FFFFFF; --neutral-10:#EEEEEE; --neutral-20:#DDDDDD; --neutral-40:#B5B5B5;
+  --neutral-60:#777777; --neutral-80:#333333; --neutral-100:#000000;
+  --surface-10:#F1F4F9; --surface-20:#D9DEE5; --surface-40:#8A93A6;
+
+  /* ── semantic ── */
+  --bg-page:var(--surface-10); --bg-surface:var(--neutral-0); --bg-sunken:var(--surface-10);
+  --bg-brand:var(--green-500); --bg-brand-subtle:var(--green-05); --bg-accent:var(--sub1-500);
+  --bg-point:var(--point-500); --bg-point-subtle:var(--point-10); --bg-info:var(--sub2-500);
+  --bg-currency:var(--currency-500); --bg-currency-subtle:var(--currency-10);
+  --text-primary:var(--neutral-100); --text-secondary:var(--neutral-80); --text-tertiary:var(--neutral-60);
+  --text-disabled:var(--neutral-40); --text-brand:var(--green-500); --text-point:var(--point-500);
+  --text-currency:var(--currency-500); --text-on-brand:var(--neutral-0); --text-on-brand-emph:var(--sub1-500);
+  --border-subtle:var(--neutral-10); --border-default:var(--neutral-20); --border-strong:var(--neutral-40);
+  --border-brand:var(--green-500); --border-point:var(--point-500);
+
+  /* ── elevation (검정 알파) ── */
+  --elev-1:0 1px 3px rgba(0,0,0,.08);
+  --elev-2:0 2px 8px rgba(0,0,0,.12);
+
+  --sans:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;
+  --num:'Noto Sans KR',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+
+/* 게임원 디자인 시스템 §8: 다크 값은 정본에 없어 지어내지 않는다 → 라이트 단일. 배경을 명시적으로 칠한다. */
+body{margin:0;background:var(--bg-page);color:var(--text-primary);font-family:var(--sans);
+  font-size:15px;line-height:1.6;font-weight:400;-webkit-font-smoothing:antialiased;
+  letter-spacing:-.02em;word-break:keep-all}
+.wrap{display:grid;grid-template-columns:250px minmax(0,1fr);gap:0;max-width:1480px;margin:0 auto}
+
+nav{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--border-subtle);
+  padding:30px 20px 50px;background:var(--bg-surface)}
+nav .brand{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-brand)}
+nav .doc{font-size:19px;font-weight:700;margin:6px 0 4px;letter-spacing:-.03em;line-height:1.35}
+nav .ver{font-size:12px;color:var(--text-tertiary);font-variant-numeric:tabular-nums;font-family:var(--num)}
+nav ol{list-style:none;margin:20px 0 0;padding:0;display:flex;flex-direction:column;gap:1px}
+nav ol a{display:flex;gap:10px;padding:7px 10px;border-radius:5px;text-decoration:none;color:var(--text-secondary);
+  font-size:13.5px;line-height:1.45;font-weight:400}
+nav ol a:hover{background:var(--bg-sunken);color:var(--text-primary)}
+nav ol a .k{color:var(--text-tertiary);font-variant-numeric:tabular-nums;font-size:12px;padding-top:1px;min-width:15px;font-family:var(--num)}
+nav ol a.on{background:var(--bg-brand-subtle);color:var(--text-brand);font-weight:700}
+nav ol a.on .k{color:var(--text-brand)}
+nav .navnote{margin-top:24px;padding-top:18px;border-top:1px solid var(--border-subtle);font-size:12px;color:var(--text-tertiary);line-height:1.6}
+
+main{padding:0 0 100px;min-width:0}
+.hero{padding:70px 50px 46px;border-bottom:1px solid var(--border-subtle);
+  background:linear-gradient(180deg,var(--bg-surface) 0%,var(--bg-page) 100%)}
+.hero .eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-brand)}
+.hero h1{font-size:clamp(28px,3.4vw,38px);line-height:1.2;letter-spacing:-.04em;margin:14px 0 16px;
+  font-weight:700;text-wrap:balance;max-width:24ch}
+.hero p{font-size:16px;color:var(--text-secondary);max-width:68ch;margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.meta span{font-size:12.5px;padding:6px 14px;border:1px solid var(--border-default);border-radius:999px;
+  color:var(--text-secondary);background:var(--bg-surface);font-variant-numeric:tabular-nums}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-top:30px;max-width:920px}
+.stats div{background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:15px;padding:18px 20px;box-shadow:var(--elev-1)}
+.stats b{display:block;font-size:28px;font-weight:700;letter-spacing:-.04em;line-height:1.1;
+  font-variant-numeric:tabular-nums;font-family:var(--num);color:var(--text-brand)}
+.stats b small{font-size:15px;font-weight:700}
+.stats b.bad{color:var(--text-point)}
+.stats i{display:block;font-style:normal;font-size:12.5px;color:var(--text-tertiary);margin-top:5px}
+
+section{padding:54px 50px 8px;scroll-margin-top:0}
+section+section{border-top:1px solid var(--border-subtle)}
+.shdr{display:flex;align-items:baseline;gap:14px;margin-bottom:8px;flex-wrap:wrap}
+.secno{font-size:12px;font-weight:700;color:var(--text-brand);font-variant-numeric:tabular-nums;
+  border:1px solid var(--border-brand);border-radius:5px;padding:3px 9px;letter-spacing:.02em}
+.shdr h2{font-size:24px;font-weight:700;letter-spacing:-.04em;margin:0;text-wrap:balance}
+.shdr h2 .sub{font-size:14px;font-weight:400;color:var(--text-tertiary);letter-spacing:-.02em}
+.lead{color:var(--text-secondary);max-width:76ch;margin:0 0 26px;font-size:15px}
+.lead b, section p b{color:var(--text-primary);font-weight:700}
+h3{font-size:18px;font-weight:700;letter-spacing:-.03em;margin:34px 0 12px}
+h3 .hn{font-size:13px;color:var(--text-tertiary);font-weight:500;margin-right:8px;font-family:var(--num)}
+section>p{max-width:80ch;font-size:15px;color:var(--text-secondary)}
+
+.tw{overflow-x:auto;border:1px solid var(--border-subtle);border-radius:15px;background:var(--bg-surface);margin:0 0 22px;box-shadow:var(--elev-1)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:11px 15px;border-bottom:1px solid var(--border-subtle);vertical-align:top}
+th{background:var(--bg-sunken);font-size:12px;font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--text-tertiary);white-space:nowrap}
+td{color:var(--text-secondary)}
+tbody tr:last-child td{border-bottom:0}
+td.key{white-space:nowrap;font-weight:700;color:var(--text-primary)}
+td.dim{color:var(--text-tertiary)}
+td.num{font-family:var(--num);font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+th.num{text-align:right}
+td.neg{color:var(--text-point);font-weight:700}
+td.pos{color:var(--text-brand);font-weight:700}
+tr.hl td{background:var(--bg-brand-subtle)}
+tr.bad td{background:var(--bg-point-subtle)}
+.tag{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:999px;white-space:nowrap}
+.t-ok{background:var(--bg-brand-subtle);color:var(--text-brand)}
+.t-no{background:var(--bg-point-subtle);color:var(--text-point)}
+.t-mid{background:var(--surface-20);color:var(--text-secondary)}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px;margin:0 0 22px}
+.card{background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:15px;padding:20px 22px;box-shadow:var(--elev-1)}
+.card h5{margin:0 0 7px;font-size:15px;font-weight:700;letter-spacing:-.02em;color:var(--text-primary)}
+.card p{margin:0;font-size:14px;color:var(--text-secondary);line-height:1.6}
+.card p b{color:var(--text-primary);font-weight:700}
+.card .who{font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-brand);margin-bottom:8px}
+.card.bad .who{color:var(--text-point)}
+.card.cur .who{color:var(--text-currency)}
+
+.issue{display:grid;grid-template-columns:96px minmax(0,1fr);gap:18px;padding:16px 0;border-top:1px solid var(--border-subtle)}
+.issue:first-of-type{border-top:0}
+.issue .sev{font-size:11.5px;font-weight:700;padding:3px 0;color:var(--text-point);letter-spacing:.04em}
+.issue .sev.imp{color:var(--text-brand)}
+.issue h5{margin:0 0 5px;font-size:15px;font-weight:700;color:var(--text-primary)}
+.issue p{margin:0;font-size:14px;color:var(--text-secondary);max-width:82ch;line-height:1.6}
+.issue p b{color:var(--text-primary);font-weight:700}
+
+.callout{background:var(--bg-brand-subtle);border-left:3px solid var(--border-brand);border-radius:0 10px 10px 0;
+  padding:16px 22px;margin:0 0 22px;font-size:14.5px;max-width:86ch;color:var(--text-secondary);line-height:1.6}
+.callout.warn{background:var(--bg-point-subtle);border-left-color:var(--border-point)}
+.callout b{color:var(--text-primary);font-weight:700}
+.callout .kicker{display:block;font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--text-brand);margin-bottom:5px}
+.callout.warn .kicker{color:var(--text-point)}
+
+.check{list-style:none;margin:0 0 24px;padding:0;display:flex;flex-direction:column;gap:8px}
+.check li{position:relative;padding-left:28px;font-size:14.5px;max-width:82ch;line-height:1.6;color:var(--text-secondary)}
+.check li::before{content:"☐";position:absolute;left:2px;top:0;color:var(--text-brand);font-weight:700}
+.check li b{color:var(--text-primary);font-weight:700}
+.check li.dim{color:var(--text-tertiary)}
+.check li.no::before{content:"✕";color:var(--text-point)}
+.check li.yes::before{content:"✓";color:var(--text-brand)}
+
+figure.dgm{margin:0 0 22px;border:1px solid var(--border-subtle);border-radius:15px;background:var(--bg-surface);
+  box-shadow:var(--elev-1);padding:22px 20px 18px;overflow-x:auto}
+figure.dgm svg{max-width:100%;height:auto;display:block;margin:0 auto;color:var(--text-primary)}
+figure.dgm figcaption{margin-top:14px;font-size:12.5px;color:var(--text-tertiary);line-height:1.55;text-align:center;max-width:70ch;margin-left:auto;margin-right:auto}
+figure.dgm figcaption b{color:var(--text-secondary);font-weight:700}
+figure.dgm text{font-family:var(--sans)}
+figure.dgm .bx{fill:var(--bg-surface);stroke:var(--text-primary);stroke-width:1.5}
+figure.dgm .bxk{fill:var(--bg-brand-subtle);stroke:var(--green-500);stroke-width:2}
+figure.dgm .bxg{fill:var(--bg-brand-subtle);stroke:var(--green-500);stroke-width:1.5}
+figure.dgm .bxr{fill:var(--bg-point-subtle);stroke:var(--point-500);stroke-width:1.5}
+figure.dgm .tt{fill:var(--text-primary);font-weight:700}
+figure.dgm .ts{fill:var(--text-tertiary)}
+figure.dgm .tg{fill:var(--green-500);font-weight:700}
+figure.dgm .tr{fill:var(--point-500);font-weight:700}
+figure.dgm .ln{stroke:var(--text-primary);stroke-width:1.5;fill:none}
+figure.dgm .lng{stroke:var(--green-500);stroke-width:1.5;fill:none}
+figure.dgm .lnr{stroke:var(--point-500);stroke-width:1.5;fill:none}
+figure.dgm .mk{fill:var(--text-primary)}
+figure.dgm .mkg{fill:var(--green-500)}
+figure.dgm .mkr{fill:var(--point-500)}
+
+.partband{padding:26px 50px;background:var(--bg-brand);color:var(--text-on-brand);border-top:1px solid var(--border-subtle)}
+.partband .pk{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-on-brand-emph)}
+.partband h2{margin:6px 0 5px;font-size:22px;font-weight:700;letter-spacing:-.04em;color:var(--text-on-brand)}
+.partband p{margin:0;font-size:14px;color:rgba(255,255,255,.82);max-width:78ch;line-height:1.6}
+.persp{display:inline-block;font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px;white-space:nowrap;margin-right:2px}
+.persp.p1{background:var(--bg-brand-subtle);color:var(--text-brand)}
+.persp.p2{background:var(--surface-20);color:var(--text-secondary)}
+.persp.p3{background:var(--bg-currency-subtle);color:var(--text-currency)}
+@media (max-width:1080px){.partband{padding:22px 24px}}
+
+@media (max-width:1080px){
+  .wrap{grid-template-columns:1fr}
+  nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border-subtle);padding:26px 24px}
+  nav ol{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:2px;margin-top:14px}
+  .hero{padding:44px 24px 34px}
+  section{padding:40px 24px 6px}
+}
+@media print{
+  nav{display:none} .wrap{grid-template-columns:1fr}
+  section{break-inside:avoid;padding:24px 0}
+  .tw,.callout,figure.dgm{break-inside:avoid}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+<nav>
+  <div class="brand">Gameone Lesson</div>
+  <div class="doc">레슨합시다<br>상시 운영정책</div>
+  <div class="ver">v3.0 · 2026.08.24</div>
+  <ol id="toc">
+    <li><a href="#s1"><span class="k">1</span>수익 구조</a></li>
+    <li><a href="#s2"><span class="k">2</span>신청·결제 플로우</a></li>
+    <li><a href="#s3"><span class="k">3</span>이용약관 (유저)</a></li>
+    <li><a href="#s4"><span class="k">4</span>파트너 입점·운영</a></li>
+    <li><a href="#s5"><span class="k">5</span>결제·청약철회·환불</a></li>
+    <li><a href="#s6"><span class="k">6</span>노쇼 패널티</a></li>
+    <li><a href="#s7"><span class="k">7</span>정산·세무</a></li>
+    <li><a href="#s8"><span class="k">8</span>리뷰 리워드 (원볼)</a></li>
+    <div class="grouplabel" style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-tertiary);margin:18px 0 6px;padding:0 10px">세 시선의 추가 정책</div>
+    <li><a href="#s9"><span class="k">9</span>세 시선 요약</a></li>
+    <li><a href="#s10"><span class="k">10</span>노출·발견 정책</a></li>
+    <li><a href="#s11"><span class="k">11</span>재방문·락인</a></li>
+    <li><a href="#s12"><span class="k">12</span>분쟁·품질·보상</a></li>
+    <li><a href="#s13"><span class="k">13</span>부정거래·어뷰징 방지</a></li>
+    <li><a href="#s14"><span class="k">14</span>운영 지표·대시보드</a></li>
+    <li><a href="#s15"><span class="k">15</span>시행 전 체크리스트</a></li>
+  </ol>
+  <div class="navnote">「레슨_과금정책_확정안」에서 정한 과금 구조 위에서, <b>4회차부터의 상시 운영 정책</b>을 다룬다. 3회차까지는 프로모션이므로 전환 공지는 두지 않는다. 법령 언급은 방향 확인용이며 <b>변호사·세무사 최종 검토가 필요</b>하다.</div>
+</nav>
+
+<main>
+
+<header class="hero">
+  <div class="eyebrow">Operations Policy</div>
+  <h1>레슨합시다 상시 운영정책</h1>
+  <p>과금 구조(수수료 20% · 원볼 5% · 쿼터 8타임)는 「과금정책 확정안」에서 정했다.
+    이 문서는 그 위에서 <b>4회차 상시 서비스를 실제로 운영하기 위한 정책</b>을 다룬다.</p>
+  <div class="meta">
+    <span>수익·비용 구조</span>
+    <span>신청·결제·정산 플로우</span>
+    <span>노쇼·정원·리뷰 운영</span>
+    <span>4회차 상시 정책</span>
+  </div>
+  <div class="stats">
+    <div><b>20<small>%</small></b><i>정률 수수료</i></div>
+    <div><b>8<small>타임</small></b><i>월 생성 쿼터</i></div>
+    <div><b>D+7</b><i>레슨 후 정산</i></div>
+    <div><b>5<small>%</small></b><i>원볼 할인 캡</i></div>
+  </div>
+</header>
+
+<section id="s1">
+  <div class="shdr"><span class="secno">01</span><h2>수익 구조</h2></div>
+  <p class="lead">참가자가 낸 레슨비 한 건이 <b>레슨장·참가자·게임원</b> 셋으로 어떻게 나뉘는지의 그림이다.
+    수치는 확정안의 <b>실측 12,722원</b>(2회차 가중평균) 기준이며, 상시 전환 시 레슨비가 오르면 <b>비율은 그대로, 절대액만 비례</b>해 커진다(확정안 부록).</p>
+
+  <div class="cards">
+    <div class="card"><div class="who">참가자 · 유저</div><h5>−12,722원 결제</h5>
+      <p>보유 원볼로 <b>최대 5%(−636원) 할인</b> → 실지출 12,086~12,722원. 얻는 것은 <b>레슨 + 리뷰 작성 시 원볼 적립</b>(§08).</p></div>
+    <div class="card"><div class="who">레슨장 · 파트너</div><h5>+10,178원 <span style="font-weight:400;color:var(--text-tertiary)">(80%)</span></h5>
+      <p>레슨비의 <b>80% 정산</b>(레슨 후 D+7). <b>가입비·월정액·타임 생성비 0원</b> — 안 팔리면 나가는 돈도 없다.</p></div>
+    <div class="card cur"><div class="who">게임원 · 플랫폼</div><h5>+2,544원 → 순 1,927원</h5>
+      <p>수수료 <b>20%(2,544원)</b>에서 PG·원볼 비용을 빼면 <b>건당 순마진 평균 1,927원</b>. GMV 대비 <b>실효 약 15.1%</b>.</p></div>
+  </div>
+
+  <h3><span class="hn">1-1</span>레슨 1건의 분배 — 12,722원 기준</h3>
+  <div class="tw"><table>
+    <tr><th>주체</th><th class="num">금액(건당)</th><th>설명</th></tr>
+    <tr><td class="key">참가자 결제</td><td class="num neg">−12,722</td><td>원볼 할인 시 실지출 12,086~12,722원(할인분은 게임원 부담)</td></tr>
+    <tr class="hl"><td class="key">레슨장 정산</td><td class="num pos">+10,178</td><td>레슨비의 <b>80%</b>, D+7 정산</td></tr>
+    <tr><td class="key">게임원 수수료(총)</td><td class="num">+2,544</td><td>레슨비의 <b>20%</b> — 여기서 비용이 빠진다(아래)</td></tr>
+  </table></div>
+
+  <h3><span class="hn">1-2</span>게임원 20% 안에서 빠지는 비용</h3>
+  <div class="tw"><table>
+    <tr><th>비용 항목</th><th class="num">금액(건당)</th><th>비고</th></tr>
+    <tr><td class="key">PG 수수료</td><td class="num neg">−330</td><td>약 2.8% · 카드·간편결제</td></tr>
+    <tr><td class="key">원볼 할인 부담</td><td class="num neg">−606 / −78</td><td>무료 원볼 사용 606원 / 유료 원볼 78원. 무료 원볼 실질 backing 4.8%</td></tr>
+    <tr><td class="key">리뷰 리워드 원볼</td><td class="num">현금유출 0</td><td>원볼 지급 — 현금이 아니라 원볼 순환(§08)</td></tr>
+    <tr class="hl"><td class="key">건당 순마진</td><td class="num pos">+1,600~2,188</td><td>원볼 사용률 60% 가정 시 <b>평균 1,927원</b></td></tr>
+  </table></div>
+
+  <div class="callout"><span class="kicker">정률의 강점</span>
+    셋 중 게임원만 비용을 안고 간다. 대신 <b>가격이 올라도 부담률은 20%로 고정</b>이라 레슨비 상승분이 그대로 수익이 된다(확정안 부록).
+    <b>레슨장은 "안 팔리면 0원", 참가자는 원볼로 할인·적립</b> — 세 주체가 각자 얻는 게 있어야 상시로 굴러간다.
+  </div>
+</section>
+
+<section id="s2">
+  <div class="shdr"><span class="secno">02</span><h2>신청·결제 플로우 <span class="sub">— 앱 기준</span></h2></div>
+  <p class="lead">유저가 타임을 고르고 결제해 예약이 확정되기까지, 그리고 취소·노쇼로 갈라지는 지점까지의 흐름이다.
+    <b>결제 완료가 곧 예약 확정</b>(승인 단계 없음)이라는 점이 핵심이다.</p>
+
+  <figure class="dgm">
+    <svg viewBox="0 0 1040 300" role="img" aria-label="신청·결제 플로우: 타임 선택 → 예약 화면 → PG 결제 → 예약 확정 → 레슨 진행 → 리뷰·원볼 적립. 예약 확정에서 하루 전 취소는 100% 환불, 당일 불참(노쇼)은 환불 없음으로 분기. 출석 체크는 없다.">
+      <defs>
+        <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" class="mk"/></marker>
+        <marker id="arwG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" class="mkg"/></marker>
+        <marker id="arwR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" class="mkr"/></marker>
+      </defs>
+      <g>
+        <!-- B1 -->
+        <rect x="16" y="48" width="150" height="58" rx="8" class="bx"/>
+        <text x="91" y="72" text-anchor="middle" font-size="13" class="tt">타임 탐색·선택</text>
+        <text x="91" y="90" text-anchor="middle" font-size="11" class="ts">레슨/타임 목록</text>
+        <!-- B2 -->
+        <rect x="188" y="48" width="150" height="58" rx="8" class="bx"/>
+        <text x="263" y="70" text-anchor="middle" font-size="13" class="tt">예약 화면</text>
+        <text x="263" y="87" text-anchor="middle" font-size="10.5" class="ts">주소·일시·환불 확인</text>
+        <text x="263" y="100" text-anchor="middle" font-size="10.5" class="ts">원볼 할인 적용</text>
+        <!-- B3 -->
+        <rect x="360" y="48" width="150" height="58" rx="8" class="bx"/>
+        <text x="435" y="72" text-anchor="middle" font-size="13" class="tt">PG 결제</text>
+        <text x="435" y="90" text-anchor="middle" font-size="11" class="ts">카드·간편결제</text>
+        <!-- B4 (key) -->
+        <rect x="532" y="48" width="150" height="58" rx="8" class="bxk"/>
+        <text x="607" y="70" text-anchor="middle" font-size="13" class="tg">예약 확정</text>
+        <text x="607" y="87" text-anchor="middle" font-size="10.5" class="ts">결제 = 확정</text>
+        <text x="607" y="100" text-anchor="middle" font-size="10.5" class="ts">정원 −1</text>
+        <!-- B5 -->
+        <rect x="704" y="48" width="150" height="58" rx="8" class="bx"/>
+        <text x="779" y="72" text-anchor="middle" font-size="13" class="tt">레슨 진행 (오프라인)</text>
+        <text x="779" y="90" text-anchor="middle" font-size="11" class="ts">시스템 미개입·출석 체크 없음</text>
+        <!-- B6 -->
+        <rect x="876" y="48" width="150" height="58" rx="8" class="bx"/>
+        <text x="951" y="72" text-anchor="middle" font-size="13" class="tt">리뷰 → 원볼 적립</text>
+        <text x="951" y="90" text-anchor="middle" font-size="11" class="ts">1레슨 1리뷰</text>
+
+        <!-- arrows row1 -->
+        <line x1="166" y1="77" x2="186" y2="77" class="ln" marker-end="url(#arw)"/>
+        <line x1="338" y1="77" x2="358" y2="77" class="ln" marker-end="url(#arw)"/>
+        <line x1="510" y1="77" x2="530" y2="77" class="ln" marker-end="url(#arw)"/>
+        <line x1="682" y1="77" x2="702" y2="77" class="ln" marker-end="url(#arw)"/>
+        <text x="693" y="40" text-anchor="middle" font-size="10.5" class="ts">레슨 당일</text>
+        <line x1="854" y1="77" x2="874" y2="77" class="ln" marker-end="url(#arw)"/>
+        <text x="865" y="40" text-anchor="middle" font-size="10.5" class="ts">레슨 종료</text>
+
+        <!-- branch from B4 -->
+        <path d="M580,106 L520,206" class="lng" marker-end="url(#arwG)"/>
+        <path d="M634,106 L740,206" class="lnr" marker-end="url(#arwR)"/>
+        <text x="470" y="162" text-anchor="middle" font-size="10.5" class="tg">하루 전 취소</text>
+        <text x="726" y="150" text-anchor="middle" font-size="10.5" class="tr">당일 불참(노쇼)</text>
+
+        <!-- outcome A -->
+        <rect x="360" y="212" width="190" height="56" rx="8" class="bxg"/>
+        <text x="455" y="235" text-anchor="middle" font-size="12.5" class="tg">100% 환불</text>
+        <text x="455" y="252" text-anchor="middle" font-size="10.5" class="ts">원볼 원복 · 만료일 유지</text>
+        <!-- outcome B -->
+        <rect x="646" y="212" width="190" height="56" rx="8" class="bxr"/>
+        <text x="741" y="235" text-anchor="middle" font-size="12.5" class="tr">환불 없음</text>
+        <text x="741" y="252" text-anchor="middle" font-size="10.5" class="ts">원볼 소진 · 리워드 없음</text>
+      </g>
+    </svg>
+    <figcaption>결제와 동시에 예약이 확정되고 정원이 하나 줄어든다. 이후 갈림길은 <b>취소 시점</b> 하나 — 레슨 하루 전까지는 100% 환불, 그 뒤(당일 불참 포함)는 환불되지 않는다.</figcaption>
+  </figure>
+
+  <div class="callout warn"><span class="kicker">결제=확정이라 동시성 처리가 필수다</span>
+    승인 단계가 없으므로, <b>정원이 1 남았을 때 동시에 두 명이 결제</b>하면 초과 예약이 난다.
+    <b>정원 차감을 결제 트랜잭션과 묶어</b> 마감 시 즉시 신청을 닫는다(정원 캡 §4-1과 직접 연결).
+  </div>
+</section>
+
+<section id="s3">
+  <div class="shdr"><span class="secno">03</span><h2>이용약관 (유저)</h2></div>
+  <p class="lead">유저가 앱에서 결제·예약하는 순간부터 적용되는 <b>운영 규칙</b>이다. 상시 레슨에 필요한 <b>필수 포함 조항</b>을 정리한다.</p>
+
+  <div class="callout warn"><span class="kicker">전제 — 이 문서는 법률자문이 아니다</span>
+    아래 약관·정산·세무 관련 언급은 <b>무엇을 정하고 준비해야 하는지</b>를 짚기 위한 것이며,
+    조항 문구·세무 처리의 최종 판단은 <b>변호사·세무사 검토</b>를 거친다.
+  </div>
+
+  <div class="tw"><table>
+    <tr><th>조항</th><th>담아야 할 내용</th><th>근거</th></tr>
+    <tr class="hl"><td class="key">서비스 성격</td><td>게임원은 <b>레슨 예약을 중개</b>하고, 레슨 제공 주체는 파트너임을 명시</td><td class="dim">—</td></tr>
+    <tr><td class="key">예약·결제·확정</td><td><b>결제 완료 = 예약 확정</b>, 승인 단계 없음. 정원은 시스템 관리(§02)</td><td class="dim">확정안 §2</td></tr>
+    <tr class="hl"><td class="key">취소·환불</td><td><b>레슨 하루 전까지 100% 환불</b> 등 취소 기한별 환불율. 당일·노쇼는 환불 없음(§06)</td><td class="dim">확정안 §7</td></tr>
+    <tr><td class="key">원볼</td><td>할인 수단으로만 사용(결제수단 아님)·5% 캡·소진 우선순위·리뷰 적립(§08)</td><td class="dim">확정안 §3</td></tr>
+    <tr><td class="key">리뷰</td><td>작성 자격(결제+레슨일 경과), 1레슨 1리뷰, 별점 무관 적립(§08)</td><td class="dim">확정안 §3-1</td></tr>
+    <tr class="hl"><td class="key">이용자 의무·노쇼</td><td>노쇼 시 환불 규정 적용(당일 미취소=소진), 반복 취소·환불 남용 제한(§06)</td><td class="dim">§06</td></tr>
+    <tr><td class="key">분쟁·준거법</td><td>분쟁 처리 절차·고객센터, 관할·준거법, 약관 변경 고지 절차</td><td class="dim">§09</td></tr>
+  </table></div>
+
+  <div class="callout"><span class="kicker">약관은 "동의 이력"까지가 실무다</span>
+    약관·개인정보 동의는 <b>버전·동의 시각을 로그로 남긴다.</b> 약관을 개정하면 <b>사전 고지 후 재동의</b> 흐름이 필요하다.
+    결제·환불·노쇼처럼 유저에게 불리할 수 있는 조항은 <b>결제 화면에서 눈에 띄게(별도 확인)</b> 고지해야 효력이 안정적이다.
+  </div>
+</section>
+
+<section id="s4">
+  <div class="shdr"><span class="secno">04</span><h2>파트너 입점·운영</h2></div>
+  <p class="lead">파트너와의 관계는 "가입"이 아니라 <b>수수료·정산·책임을 규정한 운영 계약</b>이 된다. 상시 운영의 뼈대가 되는 <b>입점계약</b>의 골격이다.</p>
+
+  <div class="tw"><table>
+    <tr><th>조항</th><th>담아야 할 내용</th></tr>
+    <tr class="hl"><td class="key">수수료·정산</td><td><b>정률 20%</b>(성사분), 고정비 0, <b>레슨 종료 후 D+7 정산</b>, 정산 명세 제공, 세금계산서 관계(§07)</td></tr>
+    <tr><td class="key">레슨비·타임</td><td>파트너 자유 설정(<b>최소 10,000원</b>), <b>월 8타임</b> 생성 쿼터. <b>타임당 정원 캡</b>은 §4-1</td></tr>
+    <tr class="hl"><td class="key">환불·취소 협조</td><td><b>신청자 있는 타임은 폐쇄 불가</b>, 불가피 시 <b>파트너 취소+전액 환불</b>(§06). 환불 시 정산 차감·회수</td></tr>
+    <tr><td class="key">정산 역흐름</td><td>정산 후 환불 발생 시 <b>차기 정산에서 차감/회수</b> 근거 조항(§05·§07과 연결)</td></tr>
+    <tr><td class="key">자격·표시</td><td>사업자등록·필요 신고(체육시설/학원 등) 보유 확인, 허위·과장 표시 금지, 강사 자격 표시 책임</td></tr>
+    <tr class="hl"><td class="key">품질·해지</td><td>노쇼 대응(§06)·후기 관리·프리미엄 자격 기준(구독 도입 시), <b>계약 위반 시 노출 제한·해지</b> 근거</td></tr>
+    <tr><td class="key">변경</td><td>수수료·정산 주기·정책 변경 시 <b>사전 통지</b> 및 동의 절차</td></tr>
+  </table></div>
+
+  <h3><span class="hn">4-1</span>타임당 정원 캡</h3>
+  <p>타임 <b>생성</b> 쿼터(월 8타임, 확정안 §5)와 별개로, 타임 <b>하나에 몇 명까지</b> 받을지의 상·하한이다.
+    정원 설정·배정은 개발이 필요하다. <b>출석 체크가 없으므로 '타임당 실인원'은 직접 집계되지 않고, 정원은 '신청 수' 기준으로만 관리</b>된다.</p>
+  <ul class="check">
+    <li class="yes"><b>파트너가 타임별 정원을 설정</b>하되, 시스템이 <b>상한·하한</b>을 적용한다.</li>
+    <li class="yes"><b>상한(max)</b> — 지도 품질·안전을 위해 <b>강사 1인당 권장 정원 + 절대 상한</b>을 둔다. 실측 과밀(잠실 16명/타임) 반복을 막는다.</li>
+    <li class="yes"><b>하한(min)</b> — 최소 개설 정원(예: 1명). 정원이 지나치게 작으면 노출 대비 비효율이므로 안내한다.</li>
+    <li class="no"><b>정원 마감 시 자동 신청 마감</b> — 결제=확정이므로 <b>동시 결제로 정원이 초과되지 않게</b> 차감을 결제와 묶는다(§02).</li>
+    <li class="yes"><b>정원 변경</b> — 신청자가 있으면 <b>하향 불가</b>(기결제 유저 보호), 상향만 허용.</li>
+    <li class="dim"><b>정원은 신청 기준으로만 관리</b> — 노쇼(취소 없이 미참석)는 출석 체크가 없어 시스템이 알 수 없다. 정원 캡은 '실인원'이 아니라 '신청 과밀·과소'를 막는 장치로 본다(§06).</li>
+  </ul>
+
+  <div class="callout warn"><span class="kicker">"정산 역흐름"과 "임의 폐쇄"는 빠뜨리기 쉽다</span>
+    ① <b>정산 후 환불 회수</b> — 정산 주기를 취소 가능 기간보다 길게(D+7) 잡아 원천 차단하되(확정안 §7), 남는 예외의 <b>차감·회수 조항</b>을 계약에 명시한다.
+    ② <b>신청자 있는 타임 폐쇄 불가</b>를 못 박아, 파트너 임의 취소로 인한 유저 이탈을 막는다(§06).
+  </div>
+
+  <h3><span class="hn">4-2</span>스케줄 변경 · 휴강</h3>
+  <p>야구레슨은 <b>날씨·시설에 민감</b>하다. 모든 변수를 "취소"로만 처리하면 유저·파트너 모두 손해다.
+    <b>변경·휴강·예약 이동(reschedule)</b> 규칙을 둔다.</p>
+  <ul class="check">
+    <li class="yes"><b>파트너 타임 변경</b> — 신청자가 있으면 <b>동의 또는 대체 타임을 제시</b>한 뒤 변경, 미동의 유저는 전액 환불.</li>
+    <li class="yes"><b>우천·시설 휴강</b> — 파트너 휴강 시 유저에게 <b>전액 환불 또는 대체 타임 예약</b>을 선택하게 한다. 실내 대체 여부는 타임 설명에 표기.</li>
+    <li class="yes"><b>유저 예약 이동(reschedule)</b> — 취소 대신 <b>같은 레슨장의 다른 타임으로 이동</b>(하루 전까지·정원 여유 시). 취소·재결제보다 이탈이 적다.</li>
+    <li class="dim">변경·이동 <b>가능 횟수·기한</b>은 남용 방지를 위해 제한을 둔다(세부 미정).</li>
+  </ul>
+  <div class="callout"><span class="kicker">이동은 환불 역흐름을 줄인다</span>
+    예약 이동이 취소·재결제를 대체하면 <b>정산 회수(환불 역흐름 §07)가 생기지 않는다.</b>
+    유저에겐 편의, 파트너에겐 매출 유지, 게임원에겐 정산 단순화 — 세 시선 모두에 이득이다.
+  </div>
+</section>
+
+<section id="s5">
+  <div class="shdr"><span class="secno">05</span><h2>결제·청약철회·환불</h2></div>
+  <p class="lead">앱 내 PG 결제(확정안 §2)를 상시로 켜면, <b>전자상거래법의 결제·청약철회 규정</b>이 그대로 걸린다.</p>
+
+  <ul class="check">
+    <li class="yes"><b>결제수단은 카드·간편결제 등 PG 지원 수단</b>. 원볼은 결제수단이 아니라 할인 수단(확정안 §2·§3).</li>
+    <li class="yes"><b>청약철회·환불 조건을 결제 전 고지</b>한다 — "레슨 하루 전 100% 환불"의 <b>기한별 환불율 표</b>를 명시.</li>
+    <li class="yes"><b>이미 개시된 용역은 철회가 제한될 수 있음</b>을 사전 고지한다(용역 특성). 다만 법정 청약철회권과 상충하지 않게 <b>법무 검토</b>.</li>
+    <li class="yes"><b>PG 부분취소 지원 여부를 계약 전 확인</b>한다 — 원볼 할인분 원복·부분 환불 처리의 전제(확정안 §7·§8).</li>
+    <li class="dim"><b>구매안전(에스크로) 적용 여부 확인</b> — 아래 콜아웃 참조.</li>
+  </ul>
+
+  <div class="callout"><span class="kicker">에스크로(구매안전서비스) — 카드 결제면 대체로 예외</span>
+    선불식 통신판매는 원칙적으로 <b>구매안전서비스(에스크로/소비자피해보상보험)</b> 의무가 있으나,
+    <b>신용카드 결제분은 카드사 항변권으로 보호</b>되어 예외로 인정되는 것이 일반적이다.
+    카드·간편결제 중심(확정안 §2)이면 대체로 충족되지만, <b>계좌이체·무통장을 열면 에스크로가 필요</b>해진다.
+    <b>PG사 계약 시 요율·정산주기와 함께 구매안전 적용 범위를 반드시 확인</b>한다.
+  </div>
+
+  <div class="callout warn"><span class="kicker">환불 역흐름 차단이 결제 설계의 핵심</span>
+    <b>파트너 정산이 나간 뒤 환불이 나면 회수해야 한다.</b> 정산 주기를 취소 가능 기간보다 길게(D+7) 잡으면 이 상황 자체가 거의 생기지 않는다(확정안 §7).
+    그래도 남는 예외는 §04의 <b>정산 차감·회수 조항</b>과 <b>PG 부분취소</b>로 처리한다(정산 플로우 §07).
+  </div>
+</section>
+
+<section id="s6">
+  <div class="shdr"><span class="secno">06</span><h2>노쇼 패널티 <span class="sub">— 제안</span></h2></div>
+  <div class="callout warn"><span class="kicker">전제 — 출석 체크가 없다</span>
+    시스템은 <b>실제 참석/노쇼를 확인하지 않는다</b>(출석 체크 기능 없음).
+    따라서 노쇼는 <b>'집계·자동 제재의 대상'이 아니라 '환불 규정으로 흡수되는 결과'</b>다 —
+    시스템이 아는 것은 <b>취소 여부와 그 시점</b>뿐이며, "당일까지 취소하지 않음"은 (실제 참석 여부와 무관하게) <b>정상 소진</b>으로 처리된다.
+  </div>
+
+  <p class="lead">그래서 노쇼 페널티는 두 가지에만 의존한다 — <b>① 취소 규정(당일 미취소 = 환불 없음)</b>과 <b>② 유저·파트너 상호 신고</b>. '노쇼율'을 세어 제재하는 방식은 쓸 수 없다.</p>
+
+  <div class="cards">
+    <div class="card"><div class="who">원칙 1</div><h5>1차 페널티는 이미 내장</h5>
+      <p><b>하루 전까지만 100% 환불</b>이므로 당일 취소·노쇼는 <b>환불 없이 결제액 손실</b>. 출석 확인 없이도 <b>취소 기록만으로</b> 성립하는 억제력이다.</p></div>
+    <div class="card"><div class="who">원칙 2</div><h5>리워드는 결제·레슨일 기준</h5>
+      <p>출석을 못 보므로 리뷰 리워드는 <b>결제+레슨일 경과</b>로 지급된다(§08). 노쇼여도 형식상 리뷰가 가능하나, <b>결제액 손실+어뷰징 관리</b>(§13)로 억제한다.</p></div>
+    <div class="card bad"><div class="who">원칙 3</div><h5>노쇼는 세지 말고 간접 신호로</h5>
+      <p>노쇼는 직접 측정할 수 없다. 대신 <b>취소율·파트너 신고·재방문율</b>로 간접 관찰하고, <b>반복 취소 남용</b>만 제재 대상으로 삼는다.</p></div>
+  </div>
+
+  <h3><span class="hn">6-1</span>유저 노쇼</h3>
+  <div class="tw"><table>
+    <tr><th>상황</th><th>처리</th><th>반복 시</th></tr>
+    <tr class="hl"><td class="key">레슨 하루 전까지 취소</td><td>100% 환불, 원볼 원복(만료일 유지)</td><td class="dim">해당 없음</td></tr>
+    <tr class="bad"><td class="key">당일 취소 · 노쇼</td><td><b>환불 없음</b>, 사용한 원볼 소진 확정(§8-1)</td><td>시스템은 노쇼를 구분하지 못함 — 별도 자동 제재 없음</td></tr>
+    <tr><td class="key">반복 예약-취소 남용</td><td>취소는 규정대로 처리</td><td><b>취소율</b> 모니터링 → 남용 시 <b>예약 제한·경고</b> <span class="dim">(수위 미정)</span></td></tr>
+  </table></div>
+  <p class="dim" style="font-size:13.5px;color:var(--text-tertiary);max-width:80ch;margin:-6px 0 0">순수 노쇼(취소 없이 미참석)는 시스템이 알 수 없으므로, <b style="color:var(--text-secondary)">환불 손실이 사실상 유일한 페널티</b>다. 관리 가능한 것은 '취소' 행동뿐이다.</p>
+
+  <h3><span class="hn">6-2</span>파트너 노쇼</h3>
+  <div class="tw"><table>
+    <tr><th>상황</th><th>처리</th><th>반복 시</th></tr>
+    <tr><td class="key">신청자 있는 타임 임의 폐쇄</td><td><b>불가</b>(§04)</td><td class="dim">해당 없음</td></tr>
+    <tr class="hl"><td class="key">불가피 취소(시설 문제 등)</td><td>유저 <b>전액 환불</b> + 게임원 대체 안내</td><td>노출 제한</td></tr>
+    <tr class="bad"><td class="key">파트너 귀책 노쇼(강사 미출석 등)</td><td><b>유저 신고 접수</b> → 확인 → 전액 환불 + 신뢰회복(원볼 보상 검토)</td><td><b>노출 제한 → 반복 시 해지</b>(§04)</td></tr>
+  </table></div>
+  <p class="dim" style="font-size:13.5px;color:var(--text-tertiary);max-width:80ch;margin:-6px 0 0">파트너 노쇼도 시스템이 자동으로 알 수 없으므로 <b style="color:var(--text-secondary)">유저 신고(§12 CS)를 기점</b>으로 처리한다. 그래서 신고 창구가 파트너 품질 관리의 핵심 입력이 된다.</p>
+
+  <div class="callout warn"><span class="kicker">출석 체크가 없다는 것의 파장</span>
+    참석·노쇼를 구분하지 못하므로 <b>'노쇼율'·'타임당 실인원' 같은 출석 기반 지표는 직접 집계할 수 없다</b> —
+    확정안 §9-1의 참석 체크 기반 측정도 <b>대체 방식 재검토가 필요</b>하다.
+    대신 <b>취소율 · 리뷰 작성률 · 재방문율 · 신고 건수</b>를 간접 신호로 삼는다(§14).
+    <b>노쇼 페널티는 '환불 규정 + 신고'로 좁혀지고</b>, 리뷰 리워드 자격도 <b>결제+레슨일 경과</b>로 조정된다(§08).
+  </div>
+
+  <div class="callout"><span class="kicker">당일 부분환불은 권하지 않는다</span>
+    "당일 취소 50% 환불" 같은 단계적 환불은 <b>파트너 정산 확정·회수 복잡도를 키운다.</b>
+    <b>하루 전 100% / 이후 0%</b>의 단순 구조를 유지하는 편이 정산·분쟁 관리에 안전하다.
+  </div>
+</section>
+
+<section id="s7">
+  <div class="shdr"><span class="secno">07</span><h2>정산·세무</h2></div>
+  <p class="lead">확정안은 "파트너 80% / 게임원 20%"의 <b>금액 흐름</b>을 정했다. 여기서는 그 돈이 <b>언제 어떻게 이동</b>하고, <b>세무·명세</b>를 어떻게 처리할지를 정한다.</p>
+
+  <figure class="dgm">
+    <svg viewBox="0 0 1000 250" role="img" aria-label="정산 플로우: 유저 PG 결제 → 게임원 통과·결제대금 → 레슨 종료(D0) → 취소기간 경과 후 D+7 정산 확정 → 파트너 80%와 게임원 수수료 20%로 분배. 환불 발생 시 정산에서 차감하거나 차기 정산에서 회수하는 역흐름 존재.">
+      <defs>
+        <marker id="s2arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" class="mk"/></marker>
+        <marker id="s2arwG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" class="mkg"/></marker>
+        <marker id="s2arwR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" class="mkr"/></marker>
+      </defs>
+      <!-- back-arrow (환불 역흐름) -->
+      <path d="M660,96 C560,34 430,34 306,92" class="lnr" stroke-dasharray="5 4" marker-end="url(#s2arwR)"/>
+      <text x="483" y="30" text-anchor="middle" font-size="11" class="tr">환불 시 차감 · 회수</text>
+
+      <!-- main row -->
+      <rect x="16" y="96" width="160" height="58" rx="8" class="bx"/>
+      <text x="96" y="120" text-anchor="middle" font-size="13" class="tt">유저 결제 (PG)</text>
+      <text x="96" y="138" text-anchor="middle" font-size="11" class="ts">카드·간편결제</text>
+
+      <rect x="210" y="96" width="180" height="58" rx="8" class="bx"/>
+      <text x="300" y="120" text-anchor="middle" font-size="13" class="tt">게임원 통과·결제대금</text>
+      <text x="300" y="138" text-anchor="middle" font-size="11" class="ts">지급대행 · 대금 귀속</text>
+
+      <rect x="424" y="96" width="150" height="58" rx="8" class="bx"/>
+      <text x="499" y="120" text-anchor="middle" font-size="13" class="tt">레슨 종료 (D0)</text>
+      <text x="499" y="138" text-anchor="middle" font-size="11" class="ts">레슨일 경과</text>
+
+      <rect x="608" y="96" width="150" height="58" rx="8" class="bxk"/>
+      <text x="683" y="120" text-anchor="middle" font-size="13" class="tg">정산 확정 (D+7)</text>
+      <text x="683" y="138" text-anchor="middle" font-size="11" class="ts">취소기간 경과 후</text>
+
+      <!-- split boxes -->
+      <rect x="806" y="44" width="184" height="54" rx="8" class="bxg"/>
+      <text x="898" y="66" text-anchor="middle" font-size="13" class="tg">파트너 정산 80%</text>
+      <text x="898" y="83" text-anchor="middle" font-size="10.5" class="ts">수수료·원볼·환불 차감 후</text>
+
+      <rect x="806" y="152" width="184" height="54" rx="8" class="bx"/>
+      <text x="898" y="174" text-anchor="middle" font-size="13" class="tt">게임원 수수료 20%</text>
+      <text x="898" y="191" text-anchor="middle" font-size="10.5" class="ts">→ 파트너에 세금계산서</text>
+
+      <!-- arrows -->
+      <line x1="176" y1="125" x2="208" y2="125" class="ln" marker-end="url(#s2arw)"/>
+      <text x="192" y="114" text-anchor="middle" font-size="10" class="ts">대금</text>
+      <line x1="390" y1="125" x2="422" y2="125" class="ln" marker-end="url(#s2arw)"/>
+      <line x1="574" y1="125" x2="606" y2="125" class="ln" marker-end="url(#s2arw)"/>
+      <text x="590" y="114" text-anchor="middle" font-size="10" class="ts">경과</text>
+      <path d="M758,116 L806,80" class="lng" marker-end="url(#s2arwG)"/>
+      <path d="M758,134 L806,172" class="lng" marker-end="url(#s2arwG)"/>
+    </svg>
+    <figcaption>붉은 점선이 <b>환불 역흐름</b>이다 — 정산 전이면 정산에서 차감하고, 이미 나갔으면 차기 정산에서 회수한다. 정산일을 취소 가능 기간보다 <b>뒤(D+7)</b>로 두는 이유가 이 역흐름을 없애기 위해서다.</figcaption>
+  </figure>
+
+  <div class="tw"><table>
+    <tr><th>항목</th><th>내용</th><th>상태</th></tr>
+    <tr class="hl"><td class="key">매출 귀속</td><td>중개 구조 — <b>레슨 대금은 파트너 매출</b>, 게임원은 <b>수수료(20%)만 매출</b>로 인식</td><td><span class="tag t-no">세무 확정</span></td></tr>
+    <tr><td class="key">세금계산서</td><td>게임원 → 파트너에게 <b>수수료에 대한 세금계산서 발행</b>. 파트너는 이를 매입공제</td><td><span class="tag t-no">확인 필요</span></td></tr>
+    <tr class="hl"><td class="key">정산 명세</td><td>파트너별 <b>D+7 정산 명세</b> — 건별 결제액·수수료·원볼 부담·환불·순정산액</td><td><span class="tag t-mid">개발 필요</span></td></tr>
+    <tr><td class="key">부가세</td><td>레슨(용역) 과세/면세 여부, 수수료 부가세 처리 — <b>파트너 과세유형(일반·간이·면세)별 분기</b></td><td><span class="tag t-no">세무 검토</span></td></tr>
+    <tr><td class="key">결제대금 예치·지급대행</td><td>PG 정산금의 <b>게임원 통과 구조</b>(대금 귀속·지급대행) 정리 — 중개자 책임과 연결</td><td><span class="tag t-no">법무·세무</span></td></tr>
+    <tr><td class="key">비사업자 파트너</td><td>사업자등록 없는 개인 강사 직접 정산 시 <b>사업소득 원천징수(3.3%)</b> 이슈 — 원칙은 사업자 파트너 대상</td><td><span class="tag t-mid">예외 처리</span></td></tr>
+  </table></div>
+
+  <div class="callout warn"><span class="kicker">레슨비가 오르면 정산·세무 규모도 함께 커진다</span>
+    확정안 부록대로 상시 전환 시 레슨비가 <b>2~3배</b>로 오를 수 있다.
+    정률이라 비율은 같지만 <b>건당 절대액·세금계산서 금액·부가세 규모가 비례해 커진다.</b>
+    특히 <b>구독료를 정액으로 못 박으면 게임원이 손해</b>(확정안 §6-1·§8)이므로,
+    구독 가격은 <b>"수수료 절감액 연동" 또는 도입 시점 레슨비 재산정</b> 구조로 세무·정산과 함께 설계한다.
+  </div>
+</section>
+
+<section id="s8">
+  <div class="shdr"><span class="secno">08</span><h2>리뷰 리워드 <span class="sub">— 원볼로 받기</span></h2></div>
+  <p class="lead">원볼을 <b>레슨 수료가 아니라 리뷰 작성에 건다</b>(확정안 §3-1).
+    현금 유출 없이 <b>원볼을 순환</b>시키면서 플랫폼에 <b>리뷰 자산</b>을 쌓는 장치다.</p>
+
+  <div class="tw"><table>
+    <tr><th>항목</th><th>내용</th></tr>
+    <tr class="hl"><td class="key">지급 조건</td><td><b>결제 + 레슨일 경과 + 리뷰 작성.</b> 1레슨 1리뷰. <b>출석 확인이 없으므로</b> '결제+레슨일 경과'를 참여의 근거로 본다(§06)</td></tr>
+    <tr><td class="key">지급 형태</td><td><b>원볼로 지급</b>(현금 아님) — 다음 레슨에서 <b>최대 5% 할인</b>에 사용(확정안 §3)</td></tr>
+    <tr class="bad"><td class="key">지급량</td><td><b>미정</b>(확정안 §8) — 원볼 <b>backing 4.8%·할인 캡 5%</b>를 함께 보고 순환·비용 균형점에서 확정</td></tr>
+    <tr><td class="key">별점 정책</td><td><b>별점과 무관하게 지급</b> — 부정 리뷰도 동일 보상해야 신뢰가 유지된다</td></tr>
+    <tr class="hl"><td class="key">품질 장치</td><td><b>최소 글자 수</b>로 형식적 리뷰 방지, <b>일정 건수 이상일 때만 평점 노출</b>(초기 표본 적음)</td></tr>
+    <tr><td class="key">작성 기간</td><td>레슨일 이후 일정 기간 내 작성(기간·리마인드는 별도 확정)</td></tr>
+  </table></div>
+
+  <div class="callout"><span class="kicker">리뷰는 프리미엄 품질 기준의 선행 조건이다</span>
+    구독·노출 큐레이션의 <b>"후기 평점" 기준</b>은 리뷰가 먼저 쌓여야 작동한다(확정안 §3-1·§6-3).
+    그래서 리뷰 리워드는 <b>구독 설계보다 먼저</b> 가동해 두는 편이 좋다.
+  </div>
+
+  <div class="callout warn"><span class="kicker">지급량을 과하게 잡으면 원볼이 인플레된다</span>
+    원볼은 <b>게임원 비용(할인 부담, §01)</b>과 직결된다. 지급량이 크면 <b>원볼 잔량↑ → 할인 사용↑ → 건당 마진↓</b>.
+    <b>리뷰 1건 = 다음 레슨 소폭 할인에 근접</b>하는 수준에서 시작해, <b>재방문율·리뷰 작성률</b> 데이터를 보고 조정한다.
+  </div>
+
+  <div class="callout"><span class="kicker">출석 확인이 없어 생기는 빈틈 — 감수하고 관리한다</span>
+    노쇼(안 왔지만 취소도 안 한) 유저도 <b>결제+레슨일 경과 조건</b>을 채우면 리뷰를 쓰고 원볼을 받을 수 있다 — 출석을 못 보므로 이걸 원천 차단할 수는 없다.
+    다만 그 유저는 <b>이미 결제액 전액을 잃었고</b>, 원볼은 소액이다. <b>최소 글자 수 · 1레슨 1리뷰 · 어뷰징 탐지(§13)</b>로 관리하는 선에서 감수한다.
+  </div>
+
+  <h3><span class="hn">8-1</span>원볼 취소·원복 <span class="dim" style="font-size:14px;font-weight:400;color:var(--text-tertiary)">— 사용·노쇼·환불</span></h3>
+  <p>원볼은 <b>할인에 쓰이거나(사용) 리뷰로 적립된다.</b> 거래가 취소·환불되거나 유저가 오지 않았을 때
+    그 원볼을 어떻게 되돌리는지의 규칙이다. 원칙은 하나 — <b>거래가 없던 상태로 중립 복원</b>, 유저가 이득도 손해도 보지 않게.</p>
+
+  <div class="tw"><table>
+    <tr><th>상황</th><th>사용한 할인 원볼</th><th>적립된 리뷰 원볼</th><th>원칙</th></tr>
+    <tr class="hl"><td class="key">하루 전까지 취소·환불 <span class="dim">(유저)</span></td><td class="pos">원복 <span class="dim">(만료일 유지·리셋 금지)</span></td><td class="dim">해당 없음</td><td>거래 취소 → 중립 복원(확정안 §3)</td></tr>
+    <tr class="bad"><td class="key">당일 취소·노쇼 <span class="dim">(유저 귀책)</span></td><td class="neg">소진 확정 <span class="dim">(원복 없음)</span></td><td class="dim">지급 없음</td><td>환불이 없으니 원볼도 복원하지 않음</td></tr>
+    <tr class="hl"><td class="key">파트너 귀책 취소·전액 환불</td><td class="pos">원복 <span class="dim">(만료일 유지)</span></td><td class="neg">이미 적립됐다면 회수</td><td>유저 무과실 → 사용분 복원, 취소된 거래의 적립분은 회수</td></tr>
+    <tr><td class="key">리뷰 원볼 적립 후 원거래 환불</td><td class="dim">사용분 있으면 복원</td><td class="neg">적립 원볼 회수</td><td>환불된 거래로 받은 리워드는 회수(어뷰징 방지 §13)</td></tr>
+    <tr><td class="key">유료(충전) 원볼</td><td class="dim">사용분은 위 규칙대로 원복</td><td>—</td><td><b>미사용 충전분은 청약철회(환불) 가능</b> · 현금성이라 별도 규정</td></tr>
+  </table></div>
+
+  <div class="callout warn"><span class="kicker">원복은 "차감했던 종류 그대로" 되돌린다</span>
+    소진 우선순위상 <b>무료 원볼(만료일 有)이 먼저 차감</b>된다(확정안 §3). 원복할 때도 <b>차감했던 종류·만료일 그대로</b> 되돌려야 한다 —
+    무료로 차감한 걸 유료로 돌려주거나 만료일을 리셋하면 유저가 이득/손해를 본다. <b>"거래 이전 상태로의 복원"이 유일한 기준</b>이다.
+  </div>
+</section>
+
+<div class="partband">
+  <div class="pk">Extended</div>
+  <h2>세 시선으로 본 추가 정책</h2>
+  <p>여기까지가 "돈이 오가려면 반드시 필요한" 정책이라면, 아래는 상시 운영이 <b>계속 굴러가게</b> 하는 구조다.
+    레슨장·참가자·게임원이 각자 <b>계속할 이유</b>를 갖도록, 노출·재방문·신뢰의 세 축을 정책으로 만든다.</p>
+</div>
+
+<section id="s9">
+  <div class="shdr"><span class="secno">09</span><h2>세 시선 — 니즈·리스크·대응</h2></div>
+  <p class="lead">상시 운영이 지속되려면 세 주체가 각자 "계속할 이유"가 있어야 한다.
+    각자의 <b>핵심 니즈</b>와 <b>이탈 리스크</b>, 그리고 이 문서가 그것을 어떤 정책으로 다루는지를 한 장으로 본다.</p>
+
+  <div class="tw"><table>
+    <tr><th>시선</th><th>계속할 이유 (니즈)</th><th>이탈 리스크</th><th>대응 정책</th></tr>
+    <tr class="hl"><td class="key"><span class="persp p1">레슨장</span></td>
+      <td>예측 가능한 <b>신규 수요</b> · 투명한 정산 · 낮은 진입부담</td>
+      <td>노출에서 밀림, 정산 불투명 → <b>직거래 유도</b></td>
+      <td>노출 §10 · 재방문 §11 · 대시보드 §14 · 정산 §07</td></tr>
+    <tr><td class="key"><span class="persp p2">참가자</span></td>
+      <td>믿고 살 <b>근거</b> · 품질/일정 편의 · 재방문 이점</td>
+      <td>첫 구매 불신, 품질 불만·분쟁, 일정 경직 → 이탈</td>
+      <td>리뷰 §08 · 분쟁·보상 §12 · 재방문·다회권 §11 · 스케줄 §4-2</td></tr>
+    <tr class="hl"><td class="key"><span class="persp p3">게임원</span></td>
+      <td>거래액·유지율 · <b>take-rate 보호</b> · 신뢰</td>
+      <td>직거래 이탈, 어뷰징, 분쟁 방치 → 신뢰 붕괴</td>
+      <td>직거래 방지 §11 · 어뷰징 §13 · 중재 §12 · 지표 §14</td></tr>
+  </table></div>
+
+  <div class="callout"><span class="kicker">세 시선의 공통 해답은 세 축이다</span>
+    <b>노출(수요를 보내준다) · 재방문(다시 오게 한다) · 신뢰(믿고 거래한다).</b>
+    확정안 §4가 말한 게임원의 본질 — <b>"빈 타임에 신규 고객을 보내는 채널"</b> — 을 실제 정책으로 구현한 것이 §10~§14다.
+  </div>
+</section>
+
+<section id="s10">
+  <div class="shdr"><span class="secno">10</span><h2>노출·발견 정책 <span class="sub">— 정렬·배분</span></h2></div>
+  <p class="lead">게임원의 본질은 <b>수요를 보내주는 채널</b>(확정안 §4)이다. 그래서 목록·검색·홈에서 <b>어떤 타임을 먼저 보여주는가</b>가 가장 강력한 운영 레버다.
+    구독 프리미엄(확정안 §6-3) <b>이전에, 상시 기본 노출 규칙</b>부터 정한다.</p>
+
+  <p><span class="persp p1">레슨장</span> 발견성 · <span class="persp p2">참가자</span> 좋은 선택 근거 · <span class="persp p3">게임원</span> 빈 타임 채우기 — 셋이 겹치는 지점을 기본 정렬로 삼는다.</p>
+
+  <div class="tw"><table>
+    <tr><th>정렬·노출 축</th><th>이유</th><th>세 시선</th></tr>
+    <tr class="hl"><td class="key">마감 임박·빈 타임 우선</td><td>서비스 본질(빈 타임 채우기)과 정확히 일치(확정안 §6-3)</td><td>셋 모두 이득</td></tr>
+    <tr><td class="key">충족률·후기·응답속도</td><td>잘하는 파트너 우대 → 품질 유인. 후기는 §08이 선행</td><td>참가자·게임원</td></tr>
+    <tr class="hl"><td class="key">신규 파트너 부스팅</td><td>리뷰 0인 신규가 <b>영구히 밀리지 않게</b> 한도 노출(확정안 §5)</td><td>레슨장·공급 생태계</td></tr>
+    <tr><td class="key">지역·거리</td><td>유저 접근성 — 오프라인 레슨의 1순위 조건</td><td>참가자</td></tr>
+    <tr><td class="key">다양성 캡</td><td>한 파트너가 목록을 점유하지 못하게(확정안 §5)</td><td>레슨장·게임원</td></tr>
+  </table></div>
+
+  <div class="callout warn"><span class="kicker">"돈으로만 상위"는 금지 · 세부 가중치는 비공개</span>
+    노출 우대는 <b>구독 + 품질 기준</b>을 함께 걸어야 한다(확정안 §6-3) — 돈만으로 상위에 오르면 유저 신뢰가 무너진다.
+    또한 정렬의 <b>세부 가중치는 공개하지 않는다</b> — 공개하면 어뷰징(§13)으로 우회당한다. <b>공개하는 건 원칙, 감추는 건 파라미터.</b>
+  </div>
+</section>
+
+<section id="s11">
+  <div class="shdr"><span class="secno">11</span><h2>재방문·락인 <span class="sub">— 다회권·정기 등록·직거래 방지</span></h2></div>
+  <p class="lead">파트너가 수수료를 내는 이유는 <b>신규 고객</b>이다. 그런데 한 번 만난 뒤 <b>직거래로 빠지면</b> 게임원도 파트너도 재방문 가치를 잃는다.
+    재방문을 <b>플랫폼 안에서</b> 일으키는 구조가 필요하다.</p>
+
+  <div class="cards">
+    <div class="card cur"><div class="who">구조 1</div><h5>다회권 · 정기 등록</h5>
+      <p>유저에겐 <b>N회권 할인</b>, 파트너에겐 <b>예측 가능한 수익</b>, 게임원에겐 GMV·유지율. 확정안 §9-1의 <b>"정기 등록이 파트너 설득의 핵심"</b>과 직결.</p></div>
+    <div class="card"><div class="who">구조 2</div><h5>재방문 원볼·전용 혜택</h5>
+      <p>같은 레슨장 <b>재방문 시 원볼 적립·전용가</b>. 확정안 §4가 지적한 현장 이탈("다음엔 직접 연락")을 상쇄한다.</p></div>
+    <div class="card"><div class="who">구조 3</div><h5>앱 내 재예약 동선</h5>
+      <p>지난 레슨장·강사를 <b>바로 재예약</b>하는 동선과 리마인드 알림. 재방문 마찰을 앱이 가장 낮게 만든다.</p></div>
+  </div>
+
+  <p>여기에 <b>직거래 방지</b>를 계약·운영으로 얹는다 — 앱 밖 결제 유도 금지 조항(§04), 연락처 노출 시점 관리, 재방문 유저에게 플랫폼 이점 상시 노출.</p>
+
+  <div class="callout warn"><span class="kicker">직거래는 "막는다"가 아니라 "덜 매력적으로"</span>
+    연락처가 오가는 오프라인 서비스에서 직거래를 100% 막을 수는 없다.
+    핵심은 <b>플랫폼이 더 편하고 이득이게</b> 만드는 것 — 다회권 관리·재방문 원볼·간편 재예약이 <b>금지 조항보다 강한 락인</b>이다.
+    <b>다회권은 결제·정산·환불(잔여 회차 환불) 규칙</b>을 별도로 설계해야 한다(§05·§07 연계).
+  </div>
+</section>
+
+<section id="s12">
+  <div class="shdr"><span class="secno">12</span><h2>분쟁·품질·보상 <span class="sub">— CS·중재</span></h2></div>
+  <p class="lead">무료일 때는 없어도 됐지만, 돈이 오가면 <b>"레슨이 설명과 다르다 · 강사가 안 왔다"</b> 같은 문제를 받을 <b>창구와 처리 기준</b>이 필수다.
+    유저 신뢰의 최후 보루이자, 중개자 게임원의 역할이다.</p>
+
+  <p><span class="persp p2">참가자</span> 믿고 사는 안전망 · <span class="persp p1">레슨장</span> 명확한 책임 범위 · <span class="persp p3">게임원</span> 중재·신뢰 유지.</p>
+
+  <div class="tw"><table>
+    <tr><th>상황</th><th>처리</th><th>근거</th></tr>
+    <tr class="hl"><td class="key">레슨이 설명과 현저히 다름</td><td>검토 → <b>부분/전액 환불 또는 원볼 보상</b></td><td class="dim">표시 책임 파트너 §04</td></tr>
+    <tr><td class="key">파트너 귀책 노쇼·취소</td><td>유저 <b>전액 환불</b> + 신뢰회복(원볼 보상 검토)</td><td class="dim">§06</td></tr>
+    <tr class="hl"><td class="key">분쟁 발생 건의 정산</td><td><b>해당 건 정산 보류·조사</b> 후 처리</td><td class="dim">§07 역흐름</td></tr>
+    <tr><td class="key">품질 반복 미달</td><td>노출 제한 → 반복 시 해지</td><td class="dim">§04 · §10</td></tr>
+    <tr><td class="key">사고·안전 신고</td><td><b>파트너 책임 범위로 안내 + 즉시 에스컬레이션</b></td><td class="dim">별도 관리 ※</td></tr>
+  </table></div>
+
+  <div class="callout"><span class="kicker">분쟁 창구는 게임원이 연다</span>
+    게임원은 중개자지만, 유저는 파트너가 아니라 <b>플랫폼을 믿고 결제</b>했다. 그래서 <b>문의·분쟁 창구는 게임원이 열고</b>, CS 채널·응답 목표시간(SLA)·처리 기록을 갖춘다.
+    <b>배상 주체는 파트너</b>라는 중개자 경계는 유지하되, 문구는 법무가 확정한다.
+  </div>
+  <div class="callout warn"><span class="kicker">※ 안전·보험 정책은 이 문서 범위 밖이다</span>
+    <b>안전·책임·미성년자·배상책임보험</b>은 앞선 결정으로 이 문서에서 제외됐다.
+    다만 사고는 오프라인 레슨에서 실제로 발생할 수 있으므로, <b>별도 문서로 반드시 관리</b>해야 한다 — CS는 신고 창구까지만 담당한다.
+  </div>
+</section>
+
+<section id="s13">
+  <div class="shdr"><span class="secno">13</span><h2>부정거래·어뷰징 방지</h2></div>
+  <p class="lead">결제·리뷰·원볼·노출이 생기면 이를 악용하는 시도도 따라온다.
+    게임원의 <b>신뢰와 유닛 이코노믹스</b>를 지키는 방어선이다.</p>
+
+  <div class="tw"><table>
+    <tr><th>유형</th><th>위험</th><th>대응</th></tr>
+    <tr class="hl"><td class="key">자전거래</td><td>파트너가 자기 타임을 결제해 <b>순위·충족률 조작</b>, 수수료 되돌리기</td><td>동일인·연관계정 탐지, 결제-환불 반복 패턴 감지</td></tr>
+    <tr><td class="key">리뷰 조작</td><td>허위 후기로 노출 상승</td><td><b>결제+레슨일 경과 검증 리뷰만</b>(§08), 이상 패턴 탐지</td></tr>
+    <tr class="hl"><td class="key">원볼 어뷰징</td><td>다계정 적립·할인 남용</td><td>계정 검증, <b>적립·사용 한도</b></td></tr>
+    <tr><td class="key">환불 남용</td><td>반복 예약-취소로 정원·노출 교란</td><td>취소율 모니터링, 반복 시 제한(§06)</td></tr>
+    <tr><td class="key">노쇼(취소 없이 미참석)</td><td>정원 잠식하나 <b>시스템 미집계</b></td><td>직접 제재 불가 — 취소율·파트너 신고로 간접 관리(§06)</td></tr>
+  </table></div>
+
+  <div class="callout warn"><span class="kicker">탐지 규칙은 공개하지 않는다</span>
+    자전거래·리뷰 조작 탐지 로직을 공개하면 그대로 우회된다.
+    <b>정책의 존재와 원칙은 알리되(억제 효과), 판정 파라미터는 비공개</b>로 둔다 — 노출 정책(§10)과 같은 원리다.
+  </div>
+</section>
+
+<section id="s14">
+  <div class="shdr"><span class="secno">14</span><h2>운영 지표·대시보드</h2></div>
+  <p class="lead">파트너에겐 <b>"내 타임이 얼마나 차고, 얼마 벌고, 왜 밀리는지"</b>가 보여야 하고,
+    게임원에겐 <b>서비스 건강도</b>를 보는 지표가 필요하다. 같은 데이터의 두 얼굴이다.</p>
+
+  <div class="cards">
+    <div class="card"><div class="who">레슨장 · 대시보드(기본)</div><h5>내 운영이 보이게</h5>
+      <p><b>신청 현황·충족률 · 매출/정산 예정 · 취소율 · 유입 경로 · 후기.</b> 상세 리포트는 구독 혜택(확정안 §6-2)이되, <b>최소 가시성은 기본 제공</b>한다.</p></div>
+    <div class="card cur"><div class="who">게임원 · 운영 KPI</div><h5>서비스 건강도</h5>
+      <p><b>충족률 · 취소율 · 재방문율 · 리뷰 작성률 · GMV · 실효 take-rate(≈15.1%) · 직거래 의심 신호 · 신규 파트너 정착률.</b> <span class="dim">노쇼율·실인원은 출석 체크가 없어 직접 집계 불가(§06).</span></p></div>
+  </div>
+
+  <div class="callout"><span class="kicker">지표는 다른 정책의 입력값이다</span>
+    이 지표들이 확정안 <b>§5(충족률 연동 동적 쿼터) · §6-3(프리미엄 자격) · §8(구독 도입 시점 판단)</b>의 입력값이다.
+    <b>지표 없이는 그 정책들을 켤 수 없다</b> — 대시보드·집계는 상시 오픈과 함께 최소 형태라도 확보한다.
+  </div>
+</section>
+
+<section id="s15">
+  <div class="shdr"><span class="secno">15</span><h2>시행 전 체크리스트</h2></div>
+  <p class="lead">확정안 §9의 개발·측정 항목에 더해, 4회차 상시 운영에 필요한 <b>정책·계약·정산·개발 준비물</b>을 시행 전 완료 기준으로 모은다.</p>
+
+  <div>
+    <div class="issue"><div class="sev">필수</div><div><h5>이용약관·파트너 입점계약 확정</h5>
+      <p>§03·§04의 필수 조항을 반영해 <b>문서 초안 → 법무 검토 → 동의/계약 흐름 구현</b>(버전·동의 시각 로그 포함).</p></div></div>
+    <div class="issue"><div class="sev">필수</div><div><h5>신청·결제·정산 플로우 개발</h5>
+      <p>§02·§07 플로우대로 <b>결제=확정 + 정원 동시성 차감</b>, <b>D+7 정산·환불 역흐름 회수</b>를 구현한다.</p></div></div>
+    <div class="issue"><div class="sev">필수</div><div><h5>타임당 정원 캡 · 취소/신고 처리 · 원볼 원복</h5>
+      <p><b>정원 설정·상한·마감 처리</b>(§4-1), <b>취소율 집계·신고 창구</b>(§06·§12), <b>원볼 취소·원복 규칙</b>(§8-1)을 개발한다. <b>출석 체크는 없으므로</b> 노쇼·실인원 집계는 만들지 않고, 취소·신고 기반으로 대체한다.</p></div></div>
+    <div class="issue"><div class="sev">필수</div><div><h5>PG 계약 — 요율·정산·부분취소·구매안전</h5>
+      <p>요율·정산주기, <b>부분취소 지원 여부</b>, 카드 외 결제수단 시 <b>에스크로 적용</b> 확인(§05). 확정안 §8의 입력값이기도 하다.</p></div></div>
+    <div class="issue"><div class="sev">필수</div><div><h5>정산·세무 처리 확정</h5>
+      <p><b>매출 귀속·세금계산서·부가세·과세유형 분기</b>(§07)를 세무 검토로 확정하고, <b>D+7 정산 명세 양식</b>을 개발 항목에 반영.</p></div></div>
+    <div class="issue"><div class="sev imp">중요</div><div><h5>취소 남용 제재·리뷰 리워드 수치 확정</h5>
+      <p><b>반복 취소 남용 제재 수위</b>(§06)와 <b>리뷰 원볼 지급량</b>(§08)을 취소율·재방문율·확정안 §8을 근거로 확정한다. (노쇼율은 집계 불가라 근거에서 제외.)</p></div></div>
+    <div class="issue"><div class="sev imp">중요</div><div><h5>확정안 문서 정합성 · CS 창구</h5>
+      <p>확정안 §8의 <b>상세기획서 상태 머신 수정</b>(승인 단계 삭제 → 명단 확인), 결제·환불·노쇼·분쟁 문의를 받을 <b>CS 채널·SLA·기준</b>(§12).</p></div></div>
+    <div class="issue"><div class="sev imp">중요</div><div><h5>지속 운영 구조 — 노출·재방문·신뢰</h5>
+      <p><b>기본 노출 정렬</b>(§10) · <b>다회권·재방문 혜택</b>(§11) · <b>분쟁·보상 프로세스</b>(§12) · <b>어뷰징 탐지</b>(§13) · <b>대시보드·지표 집계</b>(§14)를 상시 오픈에 맞춰 최소 형태라도 확보한다. 다회권은 결제·정산·환불 규칙이 별도로 필요하다.</p></div></div>
+  </div>
+
+  <div class="callout"><span class="kicker">한 줄 요약</span>
+    과금정책 확정안이 <b>"얼마를 어떻게 받는가"</b>였다면, 이 문서는 <b>"4회차부터 그걸 어떻게 운영하는가"</b>다.
+    돈이 오가는 기본(수익·플로우·약관·정산·노쇼)에 더해, 세 시선이 <b>계속할 이유</b>를 주는 구조 — <b>노출·재방문·신뢰</b> — 까지 정의되면 상시 운영은 리스크가 아니라 절차가 된다.
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+(function(){
+  var links = document.querySelectorAll('#toc a');
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id];
+        if (a) a.classList.add('on');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  document.querySelectorAll('main section[id]').forEach(function(s){ obs.observe(s); });
+})();
+</script>
